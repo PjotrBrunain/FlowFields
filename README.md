@@ -24,5 +24,5 @@ This is because when there's a lot of agents it's faster to just calculate one g
 
 ## Sources
 
-https://leifnode.com/2013/12/flow-field-pathfinding/
+https://leifnode.com/2013/12/flow-field-pathfinding/  
 https://www.aaai.org/Papers/AIIDE/2008/AIIDE08-031.pdf
