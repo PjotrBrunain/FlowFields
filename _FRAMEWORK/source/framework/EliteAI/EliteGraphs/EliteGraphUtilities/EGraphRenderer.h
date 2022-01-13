@@ -36,6 +36,7 @@ namespace Elite
 		Elite::Color GetNodeColor(T_NodeType* pNode) const;
 		Elite::Color GetNodeColor(GraphNode2D* pNode) const;
 		Elite::Color GetNodeColor(GridTerrainNode* pNode) const;
+		Elite::Color GetNodeColor(FlowFieldNode* pNode) const;
 
 		template<class T_ConnectionType>
 		Elite::Color GetConnectionColor(T_ConnectionType* pConnection) const;
@@ -167,6 +168,11 @@ namespace Elite
 	inline Elite::Color GraphRenderer::GetNodeColor(GridTerrainNode* pNode) const
 	{
 		return  pNode->GetColor();
+	}
+
+	inline Elite::Color GraphRenderer::GetNodeColor(FlowFieldNode* pNode) const
+	{
+		return pNode->GetColor();
 	}
 
 	template<class T_ConnectionType>

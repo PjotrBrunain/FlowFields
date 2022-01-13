@@ -60,7 +60,12 @@ namespace Elite
 			//A
 			currentNode = *std::min_element(openList.begin(), openList.end());
 			//B
-			if (currentNode.pNode == pGoalNode) break;
+			if (currentNode.pNode == pGoalNode)
+			{
+				closedList.push_back(currentNode);
+				break;
+			}
+				
 			//C
 			{
 				for (auto connection: m_pGraph->GetNodeConnections(currentNode.pNode))
@@ -68,6 +73,7 @@ namespace Elite
 					T_NodeType* node{ m_pGraph->GetNode(connection->GetTo()) };
 					float gCost{ /*GetHeuristicCost(pStartNode, node)*/ currentNode.costSoFar + connection->GetCost() };
 					bool hasFound{};
+					//assert(connection->GetFrom() == currentNode.pNode->GetIndex());
 					//D
 					for (size_t i = 0; i < closedList.size(); ++i)
 					{

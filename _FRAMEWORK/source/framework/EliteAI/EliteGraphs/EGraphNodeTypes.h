@@ -109,4 +109,17 @@ namespace Elite
 	private:
 		float m_Influence;
 	};
+
+	class FlowFieldNode : public GridTerrainNode
+	{
+	public:
+		FlowFieldNode(int idx)
+			:GridTerrainNode(idx), m_Direction{} {}
+		virtual ~FlowFieldNode() = default;
+
+		Vector2 GetDirection() const { return m_Direction; }
+		void SetDirection(Vector2 direction) { m_Direction = direction; }
+	protected:
+		Elite::Vector2 m_Direction;
+	};
 }

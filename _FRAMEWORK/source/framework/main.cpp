@@ -31,6 +31,8 @@
 	#include "projects/DecisionMaking/InfluenceMaps/App_InfluenceMap.h"
 #elif defined(ActiveApp_MachineLearning)
 	#include "projects/MachineLearning/App_MachineLearning.h"
+#elif defined(ActiveApp_FlowFields)
+	#include "projects/FlowFields/App_FlowField.h"
 #endif
 
 //Hotfix for genetic algorithms project
@@ -106,6 +108,8 @@ int main(int argc, char* argv[])
 		myApp = new App_InfluenceMap();
 #elif defined(ActiveApp_MachineLearning)
 		myApp = new App_MachineLearning();
+#elif defined(ActiveApp_FlowFields)
+		myApp = new App_FlowField();
 #endif
 
 		ELITE_ASSERT(myApp, "Application has not been created.");
