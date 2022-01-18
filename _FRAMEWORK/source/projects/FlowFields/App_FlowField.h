@@ -18,12 +18,19 @@ public:
 private:
 	unsigned int m_Rows{ 10 };
 	unsigned int m_Columns{ 10 };
+	unsigned int m_SizeCell = 15;
+
+	Elite::GridGraph<Elite::FlowFieldNode, Elite::GraphConnection>* m_pGridGraph;
+
+	Elite::GraphEditor m_GraphEditor{};
+	Elite::GraphRenderer m_GraphRenderer{};
 
 	std::vector<BYTE> m_CostField{};
 	std::vector<size_t> m_IntegrationField{m_Rows*m_Columns,std::numeric_limits<size_t>::max()};
 	std::vector<Elite::Vector2> m_FlowField{ m_Rows * m_Columns,Elite::Vector2{} };
 	int m_GoalIdx{5};
 
+	void MakeGridGraph();
 
 	void CalculateIntegrationField();
 	void CalculateFlowField();

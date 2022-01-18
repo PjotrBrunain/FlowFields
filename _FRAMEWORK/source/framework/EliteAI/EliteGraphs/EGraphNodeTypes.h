@@ -41,7 +41,7 @@ namespace Elite
 		Elite::Vector2 GetPosition() const { return m_Position; }
 		void SetPosition(const Elite::Vector2& newPos) { m_Position = newPos; }
 
-		Elite::Color GetColor() const { return m_Color; }
+		virtual Elite::Color GetColor() const { return m_Color; }
 		void SetColor(const Elite::Color& color) { m_Color = color; }
 
 	protected:
@@ -110,16 +110,38 @@ namespace Elite
 		float m_Influence;
 	};
 
-	class FlowFieldNode : public GridTerrainNode
+	class FlowFieldNode : public GraphNode2D
 	{
 	public:
 		FlowFieldNode(int idx)
-			:GridTerrainNode(idx), m_Direction{} {}
+			:GraphNode2D(idx), m_Direction{}
+		{
+			SetCost(1);
+		}
 		virtual ~FlowFieldNode() = default;
 
 		Vector2 GetDirection() const { return m_Direction; }
 		void SetDirection(Vector2 direction) { m_Direction = direction; }
+
+		BYTE GetCost() const { return m_Cost; }
+		void SetCost(BYTE cost)
+		{
+			m_Cost = cost;
+			m_Color = Color{ 0.f,1.f - float(cost) / 255.f, 0.f };
+		}
+
+		size_t GetIntegrationValue() const { return m_IntegrationValue; }
+		void SetIntegrationValue(size_t value) { m_IntegrationValue = value; }
+
+		Elite::Color GetColor() const override
+		{
+			if (m_ShowCost) return m_Color;
+			else return Color{ 0.f,float(m_IntegrationValue) / 8.f, 0.f };
+		}
 	protected:
-		Elite::Vector2 m_Direction;
+		Elite::Vector2 m_Direction{};
+		BYTE m_Cost{1};
+		size_t m_IntegrationValue{};
+		bool m_ShowCost{};
 	};
 }
