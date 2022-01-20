@@ -51,7 +51,23 @@ This takes away the cost of having to calculate the path for each and every agen
 Another advantage of this is being able to combine other steeringbehaviors with this. In my example i added a simple wander to the agents behavior as you can see below.
 ![FlowfieldInAction](https://github.com/PjotrBrunain/FlowFields/blob/main/Images/FlowFieldInAction.gif?raw=true)  
 
+## Is it more performant then other pathfinding methods?
 
+It depends on the usecase. If you have the need to steer a whole bunch of agents then it is more performant. If it is used to steer only 1 or 2 agents it won't be more performant.  
+So this is ideal to use when you have a lot of agents to steer around in for example war games where you need to move large armies to certain points.  
+The performance of the field also directly correlates to how many nodes you have. More nodes means higher calculation costs.  
+
+These are some crude measurements i did:
+- 3000 Agents, 25x25 field: ~40 fps  
+![3000Agents25x25](https://github.com/PjotrBrunain/FlowFields/blob/main/Images/3000Agents25x25.gif?raw=true)
+- 2000 Agents and below, 25x25 field: Easy 60 fps  
+![2000Agents25x25](https://github.com/PjotrBrunain/FlowFields/blob/main/Images/2000Agents25x25.gif?raw=true)
+- 1000 Agents and below, 100x100 field: Easy 60 fps  
+![1000Agents100x100](https://github.com/PjotrBrunain/FlowFields/blob/main/Images/1000Agents100x100.gif?raw=true)
+- 2000 Agents, 100x100 field: ~50 fps  
+![2000Agents100x100](https://github.com/PjotrBrunain/FlowFields/blob/main/Images/2000Agents100x100.gif?raw=true)
+
+Keep in mind these measurements are dependant on the physics calculations of the framework i use aswell.
 ## Sources
 
 https://leifnode.com/2013/12/flow-field-pathfinding/  

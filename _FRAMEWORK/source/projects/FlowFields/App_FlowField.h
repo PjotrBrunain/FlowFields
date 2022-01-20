@@ -21,8 +21,8 @@ public:
 	void Render(float deltaTime) const override;
 
 private:
-	unsigned int m_Rows{ 25 };
-	unsigned int m_Columns{ 25 };
+	unsigned int m_Rows{ 100 };
+	unsigned int m_Columns{ 100 };
 	unsigned int m_SizeCell = 15;
 
 	Elite::GridGraph<Elite::FlowFieldNode, Elite::GraphConnection>* m_pGridGraph;
