@@ -21,8 +21,8 @@ public:
 	void Render(float deltaTime) const override;
 
 private:
-	unsigned int m_Rows{ 10 };
-	unsigned int m_Columns{ 10 };
+	unsigned int m_Rows{ 25 };
+	unsigned int m_Columns{ 25 };
 	unsigned int m_SizeCell = 15;
 
 	Elite::GridGraph<Elite::FlowFieldNode, Elite::GraphConnection>* m_pGridGraph;
@@ -38,6 +38,8 @@ private:
 	FollowFlowField* m_pFollowFlowField;
 	Wander* m_pWander;
 	BlendedSteering* m_pBlendedSteering;
+
+	int m_AmountOfAgentsToSpawn{ 20 };
 
 	bool m_DrawVectors{true};
 	bool m_DrawCostGrid{};

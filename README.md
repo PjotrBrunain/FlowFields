@@ -42,6 +42,14 @@ Once all values are correctly calculated we go on to the next step.
 
 3. Vector Field aka FlowField  
 ![FlowField](https://github.com/PjotrBrunain/FlowFields/blob/main/Images/FlowField.png?raw=true)  
+After calculating the integration Field we go over all the cells and check which one of it's neighbours has the smallest integration value.  
+We then point the vector towards that cell.  
+
+
+After these 3 steps all agents that use this grid can then just check the cell they're in for the direction they need to go to.  
+This takes away the cost of having to calculate the path for each and every agent which makes this perfect for directing a lot of agents towards a goal.  
+Another advantage of this is being able to combine other steeringbehaviors with this. In my example i added a simple wander to the agents behavior as you can see below.
+![FlowfieldInAction](https://github.com/PjotrBrunain/FlowFields/blob/main/Images/FlowFieldInAction.gif?raw=true)  
 
 
 ## Sources

@@ -63,7 +63,10 @@ void App_FlowField::Update(float deltaTime)
 	{
 		for (auto spawnPoint : m_SpawnPoints)
 		{
-			SpawnAgent(spawnPoint);
+			for (int i = 0; i < m_AmountOfAgentsToSpawn; ++i)
+			{
+				SpawnAgent(spawnPoint);
+			}
 		}
 	}
 
@@ -77,7 +80,7 @@ void App_FlowField::Render(float deltaTime) const
 {
 	if (m_DrawGrid || m_DrawIntegrationGrid || m_DrawCostGrid)
 	{
-		m_GraphRenderer.RenderGraph(m_pGridGraph, true, true, false, false);
+		m_GraphRenderer.RenderGraph(m_pGridGraph, true, false, false, false);
 	}
 
 	if (m_DrawVectors)
@@ -250,6 +253,7 @@ void App_FlowField::UpdateImGui()
 		ImGui::Spacing();
 
 		m_SpawnAgents = ImGui::Button("SpawnAgents");
+		ImGui::InputInt("AmountToSpawn", &m_AmountOfAgentsToSpawn);
 
 		ImGui::Checkbox("Grid", &m_DrawGrid);
 		ImGui::Checkbox("CostGrid", &m_DrawCostGrid);
