@@ -43,9 +43,9 @@ void App_FlowField::Update(float deltaTime)
 
 		CalculateFlowField();
 	}
-	if (INPUTMANAGER->IsMouseButtonDown(Elite::eRight))
+	if (INPUTMANAGER->IsMouseButtonDown(Elite::eMiddle))
 	{
-		auto mouseData = INPUTMANAGER->GetMouseData(Elite::InputType::eMouseButton, Elite::eRight);
+		auto mouseData = INPUTMANAGER->GetMouseData(Elite::InputType::eMouseButton, Elite::eMiddle);
 		auto mousePos = DEBUGRENDERER2D->GetActiveCamera()->ConvertScreenToWorld(Elite::Vector2{ float(mouseData.X), float(mouseData.Y) });
 		m_SpawnPoints.push_back(mousePos);
 	}
@@ -140,45 +140,6 @@ void App_FlowField::CalculateIntegrationField()
 void App_FlowField::CalculateFlowField()
 {
 	CalculateIntegrationField();
-	//for (size_t i = 0; i < m_FlowField.size(); ++i)
-	//{
-	//	std::vector<NeighbourIdx> neighbours{ GetNeighbours(i) };
-	//	NeighbourIdx lowest{};
-	//	for (NeighbourIdx neighbour : neighbours)
-	//	{
-	//		if (m_IntegrationField[neighbour.idx] < m_IntegrationField[lowest.idx])
-	//			lowest = neighbour;
-	//	}
-	/*
-	//	switch (lowest.direction)
-	//	{
-	//	case Direction::N: 
-	//		m_FlowField[i] = Elite::Vector2{ 0.f,1.f };
-	//		break;
-	//	case Direction::NE: 
-	//		m_FlowField[i] = Elite::Vector2{ 1.f,1.f }.GetNormalized();
-	//		break;
-	//	case Direction::E: 
-	//		m_FlowField[i] = Elite::Vector2{ 1.f,0.f };
-	//		break;
-	//	case Direction::SE: 
-	//		m_FlowField[i] = Elite::Vector2{ 1.f,-1.f }.GetNormalized();
-	//		break;
-	//	case Direction::S: 
-	//		m_FlowField[i] = Elite::Vector2{ 0.f,-1.f };
-	//		break;
-	//	case Direction::SW: 
-	//		m_FlowField[i] = Elite::Vector2{ -1.f,-1.f }.GetNormalized();
-	//		break;
-	//	case Direction::W: 
-	//		m_FlowField[i] = Elite::Vector2{ -1.f,0.f };
-	//		break;
-	//	case Direction::NW: 
-	//		m_FlowField[i] = Elite::Vector2{ -1.f,1.f }.GetNormalized();
-	//		break;
-	//	}
-	//}
-	*/
 	const auto nodes = m_pGridGraph->GetAllActiveNodes();
 	for (const auto node : nodes)
 	{
@@ -215,7 +176,7 @@ void App_FlowField::UpdateImGui()
 		ImGui::Text("CONTROLS");
 		ImGui::Indent();
 		ImGui::Text("LMB: SetGoal");
-		ImGui::Text("RMB: SetSpawnPoint");
+		ImGui::Text("MMB: SetSpawnPoint");
 		ImGui::Unindent();
 
 		/*Spacing*/ImGui::Spacing(); ImGui::Separator(); ImGui::Spacing(); ImGui::Spacing();
