@@ -107,39 +107,18 @@ void App_FlowField::MakeGridGraph()
 
 void App_FlowField::CalculateIntegrationField()
 {
-	//std::for_each(m_IntegrationField.begin(), m_IntegrationField.end(), [](size_t& cellVallue) {cellVallue = std::numeric_limits<size_t>::max(); });
 	auto nodes = m_pGridGraph->GetAllActiveNodes();
 	std::for_each(nodes.begin(), nodes.end(), [](Elite::FlowFieldNode* node) {node->SetIntegrationValue(std::numeric_limits<size_t>::max()); });
 
 	std::vector<Elite::FlowFieldNode*> openList{};
 	m_pGridGraph->GetNode(m_GoalIdx)->SetIntegrationValue(0);
-	//m_IntegrationField[m_GoalIdx] = 0;
 	openList.push_back(m_pGridGraph->GetNode(m_GoalIdx));
 
 	while (!openList.empty())
 	{
 		Elite::FlowFieldNode* currentNode = openList.front();
 		openList.erase(remove(openList.begin(), openList.end(), currentNode));
-
-		
-
-		//std::vector<NeighbourIdx> neighbours{ GetNeighbours(currentNode) };
-		//size_t neighbourCount{ neighbours.size() };
 		auto connections{ m_pGridGraph->GetNodeConnections(currentNode->GetIndex()) };
-
-		//for (NeighbourIdx neighbour : neighbours)
-		//{
-		//	size_t cost{ m_IntegrationField[currentNode] + m_CostField[neighbour.idx] };
-		//	if (cost < m_IntegrationField[neighbour.idx])
-		//	{
-		//		if (std::find(openList.begin(), openList.end(), neighbour) == openList.end())
-		//		{
-		//			openList.push_back(neighbour.idx);
-		//		}
-		//
-		//		m_IntegrationField[neighbour.idx] = cost;
-		//	}
-		//}
 		for (auto connection : connections)
 		{
 			Elite::FlowFieldNode* neighbour{ m_pGridGraph->GetNode(connection->GetTo()) };
