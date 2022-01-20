@@ -55,6 +55,8 @@ int main(int argc, char* argv[])
 	{
 		//Window Creation
 		Elite::WindowParams params;
+		params.width = 1920;
+		params.height = 1000;
 		EliteWindow* pWindow = new EliteWindow();
 		ELITE_ASSERT(pWindow, "Window has not been created.");
 		pWindow->CreateEWindow(params);

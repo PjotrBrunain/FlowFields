@@ -34,6 +34,7 @@ This is depicted above by how green it is. The greener the square is the lower t
 
 2. With this cost Field we generate an integration Field.  
 ![IntegrationField](https://github.com/PjotrBrunain/FlowFields/blob/main/Images/IntegrationField.png?raw=true)  
+(Values depicted here are how greener how higher the integration value)  
 To generate this integration Field we first put all values to a very high value (I used the max value of size_t) and then we put the goal node's value to 0.  
 After this we go from the starting node outwards and add the cost of each cell to the cost of the cell it came from replacing the value if a different calculated value is lower.  
 This keeps going aslong as there are values changing.  
