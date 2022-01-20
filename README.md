@@ -26,19 +26,18 @@ This is because when there's a lot of agents it's faster to just calculate one g
 
 A FlowField is generated in 3 steps.
 
-1. Start with a cost Field.  
-This is a field of values ranging from 0 to 255 (more values are possible, but here a BYTE was used).  
+1. Start with a Cost Field.  
+This is a field of values ranging from 0 to 255 (more values are possible, but here a BYTE was used).
 The higher the value is, the higher the cost is to traverse it.  
-This fiels is a pre-generated field depending on the world you're trying to navigate.  
-Depicted below is a cost field which displays the cost level by how green it is. The greener the square is, the lower the cost value.  
+This field is pre-generated depending on the world you're trying to navigate.  
+Depicted below is a Cost Field which displays the cost level by how green it is. The greener the square is, the lower the cost value.
 The grey squares would represent obstacles.  
 ![CostField](https://github.com/PjotrBrunain/FlowFields/blob/main/Images/CostField.png?raw=true)  
 
-2. With this cost Field we generate an integration Field.  
-(Values depicted here are the greener the cell, the higher the integration value)  
-To generate this integration Field we first put all values to a very high value (I used the max value of size_t).  
-Next we calculate each value starting by putting the goal node's value to 0.  
-After this we go from the starting node outwards and add the cost of each cell to the integration value of the cell it came from replacing the integration value if a different calculated value is lower.  
+2. With this Cost Field we generate an Integration Field.  
+These integration values are used in the last step to determine the direction of the vector. The integration values are the combined cost values to get from point A to point B.  
+To generate this Integration Field we first put all values to a very high value (I used the max value of size_t).
+Next we calculate each value starting by putting the goal node's value to 0, then starting from the goal node outwards add the cost of each cell to the integration value of the cell it came from, replacing the integration value if the newly calculated value is lower.
 This keeps going as long as there are values changing.  
 Once all values are correctly calculated we go on to the next step.  
 Below is some pseudocode for the basic algorithm I wrote.  
@@ -56,6 +55,7 @@ Below is some pseudocode for the basic algorithm I wrote.
 			while openList.size > 0
 			{
 				set currentNode to first of openList;
+				remove currentNode from openList;
 				for (auto neigbour : currentNode.Neighbours)
 				{
 					newIntegrationValue = CalculateIntegrationValue;
@@ -67,6 +67,8 @@ Below is some pseudocode for the basic algorithm I wrote.
 				}
 			}
 		}
+		
+(Values depicted here are the greener the cell, the higher the integration value)  
 ![IntegrationField](https://github.com/PjotrBrunain/FlowFields/blob/main/Images/IntegrationField.png?raw=true)  
 
 3. Vector Field aka FlowField  
