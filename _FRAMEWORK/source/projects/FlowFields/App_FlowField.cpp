@@ -87,7 +87,7 @@ void App_FlowField::Render(float deltaTime) const
 		for (auto node : nodes)
 		{
 			if (node->GetIntegrationValue() != std::numeric_limits<size_t>::max())
-				DEBUGRENDERER2D->DrawDirection(m_pGridGraph->GetNodeWorldPos(node->GetIndex()), node->GetDirection(), float(m_SizeCell) / 2.f, Elite::Color{ 255.f,0.f,0.f });
+				DEBUGRENDERER2D->DrawDirection(m_pGridGraph->GetNodeWorldPos(node->GetIndex()), node->GetDirection(), float(m_SizeCell) / 2.f, Elite::Color{ 0.f,0.f,255.f });
 		}
 	}
 }

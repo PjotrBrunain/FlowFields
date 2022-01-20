@@ -29,9 +29,19 @@ A FlowField is generated in 3 steps.
 1. Start with a cost Field.  
 ![CostField](https://github.com/PjotrBrunain/FlowFields/blob/main/Images/CostField.png?raw=true)  
 This is a field of values ranging from 0 to 255 (this can go higher if you want but i used a BYTE for my example).  
-The higher the value is the higher the cost is to traverse it. This is depicted above by how green it is. The greener the square is the lower the cost value is.
+The higher the value is the higher the cost is to traverse it.  
+This is depicted above by how green it is. The greener the square is the lower the cost value is.
 
-2. 
+2. With this cost Field we generate an integration Field.
+![IntegrationField](https://github.com/PjotrBrunain/FlowFields/blob/main/Images/IntegrationField.png?raw=true)  
+To generate this integration Field we first put all values to a very high value (I used the max value of size_t) and then we put the goal node's value to 0.  
+After this we go from the starting node outwards and add the cost of each cell to the cost of the cell it came from replacing the value if a different calculated value is lower.  
+This keeps going aslong as there are values changing.  
+Once all values are correctly calculated we go on to the next step.  
+
+3. Vector Field aka FlowField  
+![FlowField](https://github.com/PjotrBrunain/FlowFields/blob/main/Images/FlowField.png?raw=true)  
+
 
 ## Sources
 
