@@ -67,7 +67,7 @@ These are some crude measurements i did:
 - 2000 Agents, 100x100 field: ~50 fps  
 ![2000Agents100x100](https://github.com/PjotrBrunain/FlowFields/blob/main/Images/2000Agents100x100.gif?raw=true)
 
-Keep in mind these measurements are dependant on the physics calculations of the framework i use aswell.
+Keep in mind these measurements are dependent on the physics calculations of the framework i use aswell.
 ## Sources
 
 https://leifnode.com/2013/12/flow-field-pathfinding/  
