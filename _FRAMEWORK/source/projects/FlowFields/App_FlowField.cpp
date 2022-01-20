@@ -1,9 +1,20 @@
 #include "stdafx.h"
 #include "App_FlowField.h"
 
+#include "FlowFieldSteeringBehaviors.h"
+#include "projects/Movement/SteeringBehaviors/CombinedSteering/CombinedSteeringBehaviors.h"
+
 App_FlowField::~App_FlowField()
 {
 	SAFE_DELETE(m_pGridGraph);
+	SAFE_DELETE(m_pBlendedSteering);
+	SAFE_DELETE(m_pFollowFlowField);
+	SAFE_DELETE(m_pWander);
+
+	for (auto pAgent : m_pAgents)
+	{
+		SAFE_DELETE(pAgent);
+	}
 }
 
 void App_FlowField::Start()
@@ -13,21 +24,71 @@ void App_FlowField::Start()
 	MakeGridGraph();
 
 	CalculateFlowField();
+
+	m_pFollowFlowField = new FollowFlowField{ m_pGridGraph };
+	m_pWander = new Wander{};
+	m_pBlendedSteering = new BlendedSteering({ BlendedSteering::WeightedBehavior{ m_pFollowFlowField, 1.f }, BlendedSteering::WeightedBehavior{m_pWander, 1.f} });
 }
 
 void App_FlowField::Update(float deltaTime)
 {
+	if (INPUTMANAGER->IsMouseButtonUp(Elite::eLeft))
+	{
+		auto mouseData = INPUTMANAGER->GetMouseData(Elite::InputType::eMouseButton, Elite::eLeft);
+		auto mousePos = DEBUGRENDERER2D->GetActiveCamera()->ConvertScreenToWorld(Elite::Vector2{ float(mouseData.X), float(mouseData.Y) });
+
+		auto node = m_pGridGraph->GetNodeAtWorldPos(mousePos);
+		if (node)
+			m_GoalIdx = node->GetIndex();
+
+		CalculateFlowField();
+	}
+	if (INPUTMANAGER->IsMouseButtonDown(Elite::eRight))
+	{
+		auto mouseData = INPUTMANAGER->GetMouseData(Elite::InputType::eMouseButton, Elite::eRight);
+		auto mousePos = DEBUGRENDERER2D->GetActiveCamera()->ConvertScreenToWorld(Elite::Vector2{ float(mouseData.X), float(mouseData.Y) });
+		m_SpawnPoints.push_back(mousePos);
+	}
+
+	UpdateImGui();
+
+	auto nodes = m_pGridGraph->GetAllActiveNodes();
+	std::for_each(nodes.begin(), nodes.end(), [this](Elite::FlowFieldNode* node)
+		{
+			node->SetShowCost(m_DrawCostGrid);
+			node->SetShowIntegration(m_DrawIntegrationGrid);
+		});
+
+	if (m_SpawnAgents)
+	{
+		for (auto spawnPoint : m_SpawnPoints)
+		{
+			SpawnAgent(spawnPoint);
+		}
+	}
+
+	for (auto pAgent : m_pAgents)
+	{
+		pAgent->Update(deltaTime);
+	}
 }
 
 void App_FlowField::Render(float deltaTime) const
 {
-	m_GraphRenderer.RenderGraph(m_pGridGraph, true, true,false,false);
-
-	auto nodes = m_pGridGraph->GetAllActiveNodes();
-
-	for (auto node : nodes)
+	if (m_DrawGrid || m_DrawIntegrationGrid || m_DrawCostGrid)
 	{
-		DEBUGRENDERER2D->DrawDirection(m_pGridGraph->GetNodeWorldPos(node->GetIndex()), node->GetDirection(), float(m_SizeCell) / 2.f, Elite::Color{ 255.f,0.f,0.f });
+		m_GraphRenderer.RenderGraph(m_pGridGraph, true, true, false, false);
+	}
+
+	if (m_DrawVectors)
+	{
+		auto nodes = m_pGridGraph->GetAllActiveNodes();
+
+		for (auto node : nodes)
+		{
+			if (node->GetIntegrationValue() != std::numeric_limits<size_t>::max())
+				DEBUGRENDERER2D->DrawDirection(m_pGridGraph->GetNodeWorldPos(node->GetIndex()), node->GetDirection(), float(m_SizeCell) / 2.f, Elite::Color{ 255.f,0.f,0.f });
+		}
 	}
 }
 
@@ -151,4 +212,65 @@ void App_FlowField::CalculateFlowField()
 		direction.Normalize();
 		node->SetDirection(direction);
 	}
+}
+
+void App_FlowField::UpdateImGui()
+{
+#ifdef PLATFORM_WINDOWS
+#pragma region UI
+	{
+		//Setup
+		int menuWidth = 115;
+		int const width = DEBUGRENDERER2D->GetActiveCamera()->GetWidth();
+		int const height = DEBUGRENDERER2D->GetActiveCamera()->GetHeight();
+		bool windowActive = true;
+		ImGui::SetNextWindowPos(ImVec2((float)width - menuWidth - 10, 10));
+		ImGui::SetNextWindowSize(ImVec2((float)menuWidth, (float)height - 20));
+		ImGui::Begin("Gameplay Programming", &windowActive, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+		ImGui::PushAllowKeyboardFocus(false);
+
+		//Elements
+		ImGui::Text("CONTROLS");
+		ImGui::Indent();
+		ImGui::Text("LMB: SetGoal");
+		ImGui::Text("RMB: SetSpawnPoint");
+		ImGui::Unindent();
+
+		/*Spacing*/ImGui::Spacing(); ImGui::Separator(); ImGui::Spacing(); ImGui::Spacing();
+
+		ImGui::Text("STATS");
+		ImGui::Indent();
+		ImGui::Text("%.3f ms/frame", 1000.0f / ImGui::GetIO().Framerate);
+		ImGui::Text("%.1f FPS", ImGui::GetIO().Framerate);
+		ImGui::Unindent();
+
+		/*Spacing*/ImGui::Spacing(); ImGui::Separator(); ImGui::Spacing(); ImGui::Spacing();
+
+		ImGui::Text("FlowField");
+		ImGui::Spacing();
+
+		m_SpawnAgents = ImGui::Button("SpawnAgents");
+
+		ImGui::Checkbox("Grid", &m_DrawGrid);
+		ImGui::Checkbox("CostGrid", &m_DrawCostGrid);
+		ImGui::Checkbox("IntegrationField", &m_DrawIntegrationGrid);
+		ImGui::Checkbox("VectorField", &m_DrawVectors);
+
+		ImGui::PopAllowKeyboardFocus();
+		ImGui::End();
+	}
+#pragma endregion
+#endif
+}
+
+void App_FlowField::SpawnAgent(const Elite::Vector2& pos)
+{
+	SteeringAgent* pAgent = new SteeringAgent{};
+	pAgent->SetPosition(pos);
+	pAgent->SetAutoOrient(true);
+	pAgent->SetMaxLinearSpeed(55.f);
+	pAgent->SetMaxAngularSpeed(25.f);
+	pAgent->SetMass(1);
+	pAgent->SetSteeringBehavior(m_pBlendedSteering);
+	m_pAgents.push_back(pAgent);
 }

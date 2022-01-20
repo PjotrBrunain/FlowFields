@@ -53,6 +53,7 @@
     <ClCompile Include="projects\MachineLearning\QBot.cpp" />
     <ClCompile Include="projects\MachineLearning\QLearning.cpp" />
     <ClCompile Include="projects\FlowFields\App_FlowField.cpp" />
+    <ClCompile Include="projects\FlowFields\FlowFieldSteeringBehaviors.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="projects\App_Selector.h" />
@@ -155,6 +156,7 @@
     <ClInclude Include="projects\MachineLearning\QBot.h" />
     <ClInclude Include="projects\MachineLearning\QLearning.h" />
     <ClInclude Include="projects\FlowFields\App_FlowField.h" />
+    <ClInclude Include="projects\FlowFields\FlowFieldSteeringBehaviors.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui.ini" />

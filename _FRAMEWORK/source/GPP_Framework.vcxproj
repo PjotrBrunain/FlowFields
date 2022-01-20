@@ -208,6 +208,7 @@
     <ClCompile Include="projects\DecisionMaking\FiniteStateMachines\App_AgarioGame.cpp" />
     <ClCompile Include="projects\DecisionMaking\FiniteStateMachines\StatesAndTransitions.cpp" />
     <ClCompile Include="projects\DecisionMaking\InfluenceMaps\App_InfluenceMap.cpp" />
+    <ClCompile Include="projects\FlowFields\FlowFieldSteeringBehaviors.cpp" />
     <ClCompile Include="projects\MachineLearning\App_MachineLearning.cpp" />
     <ClCompile Include="projects\MachineLearning\DynamicQLearning.cpp" />
     <ClCompile Include="projects\MachineLearning\Food.cpp" />
@@ -312,6 +313,7 @@
     <ClInclude Include="projects\DecisionMaking\FiniteStateMachines\App_AgarioGame.h" />
     <ClInclude Include="projects\DecisionMaking\FiniteStateMachines\StatesAndTransitions.h" />
     <ClInclude Include="projects\DecisionMaking\InfluenceMaps\App_InfluenceMap.h" />
+    <ClInclude Include="projects\FlowFields\FlowFieldSteeringBehaviors.h" />
     <ClInclude Include="projects\MachineLearning\App_MachineLearning.h" />
     <ClInclude Include="projects\MachineLearning\DynamicQLearning.h" />
     <ClInclude Include="projects\MachineLearning\Food.h" />

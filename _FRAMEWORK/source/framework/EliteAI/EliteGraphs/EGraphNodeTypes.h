@@ -136,12 +136,17 @@ namespace Elite
 		Elite::Color GetColor() const override
 		{
 			if (m_ShowCost) return m_Color;
-			else return Color{ 0.f,float(m_IntegrationValue) / 8.f, 0.f };
+			else if (m_ShowIntegration) return Color{ 0.f,float(m_IntegrationValue) / 8.f, 0.f };
+			else return DEFAULT_NODE_COLOR;
 		}
+
+		void SetShowCost(bool showCost) { m_ShowCost = showCost; }
+		void SetShowIntegration(bool showIntegration) { m_ShowIntegration = showIntegration; }
 	protected:
 		Elite::Vector2 m_Direction{};
 		BYTE m_Cost{1};
 		size_t m_IntegrationValue{};
 		bool m_ShowCost{};
+		bool m_ShowIntegration{};
 	};
 }

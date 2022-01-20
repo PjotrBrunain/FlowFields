@@ -22,6 +22,17 @@ The agents making use of this way of navigating just have to querry the cell the
 FlowFields are mostly used when there's a need to simulate a big crowd moving to certain points.  
 This is because when there's a lot of agents it's faster to just calculate one grid then to have to run an algorithm \(for example A\*\) for each agent.  
 
+## How does a FlowField work?
+
+A FlowField is generated in 3 steps.
+
+1. Start with a cost Field.  
+![CostField](https://github.com/PjotrBrunain/FlowFields/blob/main/Images/CostField.png?raw=true)  
+This is a field of values ranging from 0 to 255 (this can go higher if you want but i used a BYTE for my example).  
+The higher the value is the higher the cost is to traverse it. This is depicted above by how green it is. The greener the square is the lower the cost value is.
+
+2. 
+
 ## Sources
 
 https://leifnode.com/2013/12/flow-field-pathfinding/  

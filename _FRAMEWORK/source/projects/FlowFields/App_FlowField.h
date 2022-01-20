@@ -4,6 +4,11 @@
 #include "framework/EliteAI/EliteGraphs/EliteGraphUtilities/EGraphEditor.h"
 #include "framework/EliteAI/EliteGraphs/EliteGraphUtilities/EGraphRenderer.h"
 #include "framework/EliteInterfaces/EIApp.h"
+#include "projects/Movement/SteeringBehaviors/SteeringAgent.h"
+
+class BlendedSteering;
+class Wander;
+class FollowFlowField;
 
 class App_FlowField final: public IApp
 {
@@ -25,10 +30,19 @@ private:
 	Elite::GraphEditor m_GraphEditor{};
 	Elite::GraphRenderer m_GraphRenderer{};
 
-	std::vector<BYTE> m_CostField{};
-	std::vector<size_t> m_IntegrationField{m_Rows*m_Columns,std::numeric_limits<size_t>::max()};
-	std::vector<Elite::Vector2> m_FlowField{ m_Rows * m_Columns,Elite::Vector2{} };
 	int m_GoalIdx{5};
+	std::vector<Elite::Vector2> m_SpawnPoints{};
+	bool m_SpawnAgents;
+	std::vector<SteeringAgent*> m_pAgents;
+
+	FollowFlowField* m_pFollowFlowField;
+	Wander* m_pWander;
+	BlendedSteering* m_pBlendedSteering;
+
+	bool m_DrawVectors{true};
+	bool m_DrawCostGrid{};
+	bool m_DrawIntegrationGrid{true};
+	bool m_DrawGrid{};
 
 	void MakeGridGraph();
 
@@ -52,6 +66,7 @@ private:
 		Direction direction{};
 	};
 
-	std::vector<NeighbourIdx> GetNeighbours(size_t currentIdx) const;
+	void UpdateImGui();
+	void SpawnAgent(const Elite::Vector2& pos);
 };
 
