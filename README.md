@@ -32,7 +32,7 @@ This is a field of values ranging from 0 to 255 (this can go higher if you want 
 The higher the value is the higher the cost is to traverse it.  
 This is depicted above by how green it is. The greener the square is the lower the cost value is.
 
-2. With this cost Field we generate an integration Field.
+2. With this cost Field we generate an integration Field.  
 ![IntegrationField](https://github.com/PjotrBrunain/FlowFields/blob/main/Images/IntegrationField.png?raw=true)  
 To generate this integration Field we first put all values to a very high value (I used the max value of size_t) and then we put the goal node's value to 0.  
 After this we go from the starting node outwards and add the cost of each cell to the cost of the cell it came from replacing the value if a different calculated value is lower.  
