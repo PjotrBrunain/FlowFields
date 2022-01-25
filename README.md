@@ -20,11 +20,12 @@ The agents making use of this way of navigating just have to query the cell they
 ## Why use a FlowField
 
 FlowFields are mostly used when there's a need to simulate a big crowd moving to certain points.  
-This is because when there's a lot of agents it's faster to just calculate one grid then to have to run an algorithm \(for example A\*\) for each agent.  
+This is because, when there's a lot of agents, it's faster to just calculate one grid then having to run an algorithm \(for example A\*\) for each agent.  
+It's also possible to combine the FlowField with other steeringbehaviors, which allows the agents to run complexer navigation.  
 
 ## How does a FlowField work?
 
-A FlowField is generated in 3 steps.
+A FlowField is generated in three steps.
 
 1. Start with a Cost Field.  
 This is a field of values ranging from 0 to 255 (more values are possible, but here a BYTE was used).
@@ -35,9 +36,9 @@ The grey squares would represent obstacles.
 ![CostField](https://github.com/PjotrBrunain/FlowFields/blob/main/Images/CostField.png?raw=true)  
 
 2. With this Cost Field we generate an Integration Field.  
-These integration values are used in the last step to determine the direction of the vector. The integration values are the combined cost values to get from point A to point B.  
-To generate this Integration Field we first put all values to a very high value (I used the max value of size_t).
-Next we calculate each value starting by putting the goal node's value to 0, then starting from the goal node outwards add the cost of each cell to the integration value of the cell it came from, replacing the integration value if the newly calculated value is lower.
+These integration values are used in the last step to determine the direction of the vector. The integration values are the combined costs to get from point A to point B.  
+To generate this Integration Field we first put all values to a very high number (I used the max value of size_t).
+Next we calculate each value starting by putting the goal node's value to 0, then starting from the goal node outwards add the cost of each cell to the integration value of the cell it came from, replacing the integration value if the newly calculated number is lower.
 This keeps going as long as there are values changing.  
 Once all values are correctly calculated we go on to the next step.  
 Below is some pseudocode for the basic algorithm I wrote.  
@@ -71,7 +72,7 @@ Below is some pseudocode for the basic algorithm I wrote.
 (Values depicted here are the greener the cell, the higher the integration value)  
 ![IntegrationField](https://github.com/PjotrBrunain/FlowFields/blob/main/Images/IntegrationField.png?raw=true)  
 
-3. Vector Field aka FlowField  
+3. Vector Field also known as FlowField  
 After calculating the integration Field we go over all the cells and check which one of its neighbours has the smallest integration value.  
 We then point the vector towards that cell.  
 ![FlowField](https://github.com/PjotrBrunain/FlowFields/blob/main/Images/FlowField.png?raw=true)  
@@ -79,14 +80,14 @@ We then point the vector towards that cell.
 
 After these 3 steps all agents that use this grid can then just check the cell they're in for the direction they need to go to.  
 This takes away the cost of having to calculate the path for each and every agent which makes this perfect for directing a lot of agents towards a goal.  
-Another advantage of this is being able to combine other steeringbehaviors with this. In my example i added a simple wander combined with the flowfield direction to make for a somewhat drunken move towards the goal.
+Another advantage of this is being able to combine other steeringbehaviors with this. In my example I added a simple wander combined with the flowfield direction to make for a somewhat drunken move towards the goal.
 ![FlowfieldInAction](https://github.com/PjotrBrunain/FlowFields/blob/main/Images/FlowFieldInAction.gif?raw=true)  
 
 ## Is it more performant than other pathfinding methods?
 
-It depends on the usecase. If you have the need to steer a whole bunch of agents then it will perform better. If it is used to steer only 1 or 2 agents it is less perfomant.  
-So this is ideal to use when you have a lot of agents to steer around in for example war games where you need to move large armies to certain points.  
-The performance of the field also directly correlates to how many nodes you have. More nodes means higher calculation costs.  
+It depends on the usecase. If you have the need to steer a whole bunch of agents then it will perform better. If it is used to steer only one or two agents it is less perfomant.  
+So this is ideal to use when you have a lot of agents to steer around, in for example war games where you need to move large armies to certain points.  
+The performance of the field also directly correlates to how many nodes you have. The more, the higher the calculation costs.  
 
 These are some crude measurements i did:
 - 3000 Agents, 25x25 field: ~40 fps  
@@ -98,7 +99,12 @@ These are some crude measurements i did:
 - 2000 Agents, 100x100 field: ~50 fps  
 ![2000Agents100x100](https://github.com/PjotrBrunain/FlowFields/blob/main/Images/2000Agents100x100.gif?raw=true)
 
-Keep in mind these measurements are dependent on the physics calculations of the framework i use aswell.
+Keep in mind these measurements are dependent on the physics calculations of the framework I use aswell.  
+
+##Conclusion
+
+To be implemented
+
 ## Sources
 
 https://leifnode.com/2013/12/flow-field-pathfinding/  
