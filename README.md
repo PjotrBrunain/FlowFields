@@ -101,9 +101,10 @@ These are some crude measurements i did:
 
 Keep in mind these measurements are dependent on the physics calculations of the framework I use aswell.  
 
-##Conclusion
+## Conclusion
 
-To be implemented
+The use of FlowFields can be really usefull in places where a lot of agents need to be directed to a certain point. The fact that you can use them in combination with different steering behaviors makes for a really good and versatile way to steer agents around.  
+Especially with other (maybe better) collision calculations and more optimized code this can go really far.
 
 ## Sources
 
